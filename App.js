@@ -1,31 +1,39 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Slider, Alert } from "react-native";
-import Svg, { G, Polygon, Defs, Use } from "react-native-svg";
+import Svg, { G, Polygon, Defs, Use, Circle } from "react-native-svg";
 
 export default class App extends Component {
   state = {
     value: 0,
-    bbox: {}
+    layouts: {}
   };
   onValueChange = value => {
     this.setState({ value });
   };
+  handleLayout = event => {
+    console.log("onLayout", event.nativeEvent.layout);
+    this.setState({
+      layouts: {
+        ...this.state.layouts,
+        [event.target]: event.nativeEvent.layout
+      }
+    });
+  };
   render() {
-    const { value, bbox: { x: left, y: top, width, height } } = this.state;
+    const {
+      value,
+      layouts
+    } = this.state;
+    console.log("layouts", layouts);
     return (
       <View style={styles.container}>
         <View>
           <Svg width="200" height="200" viewBox="-300 -300 600 600">
-            <G transform="translate(-1000 -1000)">
-              {/* <Polygon
+            <G transform="translate(-1000 -1000)" onLayout={this.handleLayout}>
+              <Polygon
                 points="100,10 40,198 190,78 10,78 160,198"
-                fill="lime"
-                onLayout={event => {
-                  console.log("onLayout", event.nativeEvent.layout);
-                  this.setState({
-                    bbox: event.nativeEvent.layout
-                  });
-                }}
+                fill="purple"
+                onLayout={this.handleLayout}
                 onPressIn={() => {
                   Alert.alert(
                     "Touch handled in object!",
@@ -36,16 +44,20 @@ export default class App extends Component {
                     }
                   );
                 }}
-                transform={`translate(995 995) scale(0.5 1) rotate(${value})`}
-              /> */}
+                transform={`translate(905 905) scale(0.5 1) rotate(${value})`}
+              />
+              <Circle
+                cx="0"
+                cy="25"
+                r="35"
+                fill="red"
+                onLayout={this.handleLayout}
+                transform={`translate(900 950) skewX(${value /
+                  3}) skewY(${value / 3})`}
+              />
               <Use
                 href="#poly"
-                onLayout={event => {
-                  console.log("onLayout", event.nativeEvent.layout);
-                  this.setState({
-                    bbox: event.nativeEvent.layout
-                  });
-                }}
+                onLayout={this.handleLayout}
                 onPressIn={() => {
                   Alert.alert(
                     "Touch handled in object!",
@@ -67,18 +79,20 @@ export default class App extends Component {
               />
             </Defs>
           </Svg>
-          <View
-            style={{
-              position: "absolute",
-              borderWidth: 2,
-              borderColor: "red",
-              top,
-              left,
-              width,
-              height
-            }}
-            pointerEvents="none"
-          />
+          {Object.values(layouts).map(({ x: left, y: top, width, height }) => (
+            <View
+              style={{
+                position: "absolute",
+                borderWidth: 2,
+                borderColor: "red",
+                top,
+                left,
+                width,
+                height
+              }}
+              pointerEvents="none"
+            />
+          ))}
         </View>
         <Slider
           style={{ width: "90%" }}
