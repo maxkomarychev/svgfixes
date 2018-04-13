@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Slider, Alert } from "react-native";
-import Svg, { G, Polygon } from "react-native-svg";
+import Svg, { G, Polygon, Defs, Use } from "react-native-svg";
 
 export default class App extends Component {
   state = {
@@ -17,7 +17,7 @@ export default class App extends Component {
         <View>
           <Svg width="200" height="200" viewBox="-300 -300 600 600">
             <G transform="translate(-1000 -1000)">
-              <Polygon
+              {/* <Polygon
                 points="100,10 40,198 190,78 10,78 160,198"
                 fill="lime"
                 onLayout={event => {
@@ -37,8 +37,35 @@ export default class App extends Component {
                   );
                 }}
                 transform={`translate(995 995) scale(0.5 1) rotate(${value})`}
+              /> */}
+              <Use
+                href="#poly"
+                onLayout={event => {
+                  console.log("onLayout", event.nativeEvent.layout);
+                  this.setState({
+                    bbox: event.nativeEvent.layout
+                  });
+                }}
+                onPressIn={() => {
+                  Alert.alert(
+                    "Touch handled in object!",
+                    "",
+                    [{ text: "OK" }],
+                    {
+                      cancelable: false
+                    }
+                  );
+                }}
+                transform={`translate(995 995) scale(0.5 1) rotate(${value})`}
               />
             </G>
+            <Defs>
+              <Polygon
+                id="poly"
+                points="100,10 40,198 190,78 10,78 160,198"
+                fill="lime"
+              />
+            </Defs>
           </Svg>
           <View
             style={{
