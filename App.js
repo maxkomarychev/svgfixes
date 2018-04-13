@@ -11,7 +11,6 @@ export default class App extends Component {
     this.setState({ value });
   };
   handleLayout = event => {
-    console.log("onLayout", event.nativeEvent.layout);
     this.setState({
       layouts: {
         ...this.state.layouts,
@@ -20,23 +19,33 @@ export default class App extends Component {
     });
   };
   render() {
-    const {
-      value,
-      layouts
-    } = this.state;
-    console.log("layouts", layouts);
+    const { value, layouts } = this.state;
     return (
       <View style={styles.container}>
         <View>
-          <Svg width="200" height="200" viewBox="-300 -300 600 600">
-            <G transform="translate(-1000 -1000)" onLayout={this.handleLayout}>
+          <Svg
+            width="300"
+            height="300"
+            viewBox="-300 -300 600 600"
+            onLayout={this.handleLayout}
+          >
+            <G
+              transform="translate(-1000 -1000)"
+              onLayout={this.handleLayout}
+              onPressIn={() => {
+                Alert.alert("Touch handled in group!", "", [{ text: "OK" }], {
+                  cancelable: false
+                });
+              }}
+            >
               <Polygon
                 points="100,10 40,198 190,78 10,78 160,198"
                 fill="purple"
                 onLayout={this.handleLayout}
+                transform={`translate(905 905) scale(0.5 1) rotate(${value})`}
                 onPressIn={() => {
                   Alert.alert(
-                    "Touch handled in object!",
+                    "Touch handled in Polygon!",
                     "",
                     [{ text: "OK" }],
                     {
@@ -44,7 +53,15 @@ export default class App extends Component {
                     }
                   );
                 }}
-                transform={`translate(905 905) scale(0.5 1) rotate(${value})`}
+              />
+              <Circle
+                cx="-100"
+                cy="-225"
+                r="55"
+                fill="magenta"
+                onLayout={this.handleLayout}
+                transform={`translate(900 950) skewX(${value /
+                  3}) skewY(${value / 3})`}
               />
               <Circle
                 cx="0"
@@ -52,6 +69,16 @@ export default class App extends Component {
                 r="35"
                 fill="red"
                 onLayout={this.handleLayout}
+                onPressIn={() => {
+                  Alert.alert(
+                    "Touch handled in Circle!",
+                    "",
+                    [{ text: "OK" }],
+                    {
+                      cancelable: false
+                    }
+                  );
+                }}
                 transform={`translate(900 950) skewX(${value /
                   3}) skewY(${value / 3})`}
               />
@@ -59,14 +86,9 @@ export default class App extends Component {
                 href="#poly"
                 onLayout={this.handleLayout}
                 onPressIn={() => {
-                  Alert.alert(
-                    "Touch handled in object!",
-                    "",
-                    [{ text: "OK" }],
-                    {
-                      cancelable: false
-                    }
-                  );
+                  Alert.alert("Touch handled in Use!", "", [{ text: "OK" }], {
+                    cancelable: false
+                  });
                 }}
                 transform={`translate(995 995) scale(0.5 1) rotate(${value})`}
               />
