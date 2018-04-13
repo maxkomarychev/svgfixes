@@ -16,22 +16,29 @@ export default class App extends Component {
       <View style={styles.container}>
         <View>
           <Svg width="200" height="200" viewBox="-300 -300 600 600">
-            <Polygon
-              points="100,10 40,198 190,78 10,78 160,198"
-              fill="lime"
-              onLayout={event => {
-                console.log("onLayout", event.nativeEvent.layout);
-                this.setState({
-                  bbox: event.nativeEvent.layout
-                });
-              }}
-              onPressIn={() => {
-                Alert.alert("Touch handled in object!", "", [{ text: "OK" }], {
-                  cancelable: false
-                });
-              }}
-              transform={`scale(0.5 1) rotate(${value})`}
-            />
+            <G transform="translate(-1000 -1000)">
+              <Polygon
+                points="100,10 40,198 190,78 10,78 160,198"
+                fill="lime"
+                onLayout={event => {
+                  console.log("onLayout", event.nativeEvent.layout);
+                  this.setState({
+                    bbox: event.nativeEvent.layout
+                  });
+                }}
+                onPressIn={() => {
+                  Alert.alert(
+                    "Touch handled in object!",
+                    "",
+                    [{ text: "OK" }],
+                    {
+                      cancelable: false
+                    }
+                  );
+                }}
+                transform={`translate(995 995) scale(0.5 1) rotate(${value})`}
+              />
+            </G>
           </Svg>
           <View
             style={{
