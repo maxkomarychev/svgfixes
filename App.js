@@ -1,38 +1,59 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import React, { Component } from "react";
+import { Platform, StyleSheet, Text, View, Slider, Alert } from "react-native";
+import Svg, { G, Polygon } from "react-native-svg";
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+  state = {
+    value: 0,
+    bbox: {}
+  };
+  onValueChange = value => {
+    this.setState({ value });
+  };
   render() {
+    const { value, bbox: { x: left, y: top, width, height } } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <View>
+          <Svg width="200" height="200" viewBox="-300 -300 600 600">
+            <Polygon
+              points="100,10 40,198 190,78 10,78 160,198"
+              fill="lime"
+              onLayout={event => {
+                console.log("onLayout", event.nativeEvent.layout);
+                this.setState({
+                  bbox: event.nativeEvent.layout
+                });
+              }}
+              onPressIn={() => {
+                Alert.alert("Touch handled in object!", "", [{ text: "OK" }], {
+                  cancelable: false
+                });
+              }}
+              transform={`scale(0.5 1) rotate(${value})`}
+            />
+          </Svg>
+          <View
+            style={{
+              position: "absolute",
+              borderWidth: 2,
+              borderColor: "red",
+              top,
+              left,
+              width,
+              height
+            }}
+            pointerEvents="none"
+          />
+        </View>
+        <Slider
+          style={{ width: "90%" }}
+          maximumValue={360}
+          minimumValue={-360}
+          value={0}
+          onValueChange={this.onValueChange}
+        />
+        <Text>Value: {value}</Text>
       </View>
     );
   }
@@ -41,18 +62,9 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    paddingTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF"
+  }
 });
