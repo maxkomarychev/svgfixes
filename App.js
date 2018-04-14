@@ -22,15 +22,14 @@ export default class App extends Component {
     const { value, layouts } = this.state;
     return (
       <View style={styles.container}>
-        <View>
+        <View style={{ backgroundColor: "lightgray" }}>
           <Svg
             width="300"
             height="300"
-            viewBox="-300 -300 600 600"
+            viewBox="-1000 -1000 2000 2000"
             onLayout={this.handleLayout}
           >
             <G
-              transform="translate(-1000 -1000)"
               onLayout={this.handleLayout}
               onPressIn={() => {
                 Alert.alert("Touch handled in group!", "", [{ text: "OK" }], {
@@ -38,66 +37,36 @@ export default class App extends Component {
                 });
               }}
             >
-              <Polygon
-                points="100,10 40,198 190,78 10,78 160,198"
-                fill="purple"
-                onLayout={this.handleLayout}
-                transform={`translate(905 905) scale(0.5 1) rotate(${value})`}
-                onPressIn={() => {
-                  Alert.alert(
-                    "Touch handled in Polygon!",
-                    "",
-                    [{ text: "OK" }],
-                    {
-                      cancelable: false
-                    }
-                  );
-                }}
-              />
-              <Circle
-                cx="-100"
-                cy="-225"
-                r="55"
-                fill="magenta"
-                onLayout={this.handleLayout}
-                transform={`translate(900 950) skewX(${value /
-                  3}) skewY(${value / 3})`}
-              />
-              <Circle
-                cx="0"
-                cy="25"
-                r="35"
+              <Use
+                href="#square"
                 fill="red"
+                transform={`scale(3) skewX(${value / 3}) skewY(${value / 3})`}
                 onLayout={this.handleLayout}
-                onPressIn={() => {
-                  Alert.alert(
-                    "Touch handled in Circle!",
-                    "",
-                    [{ text: "OK" }],
-                    {
-                      cancelable: false
-                    }
-                  );
-                }}
-                transform={`translate(900 950) skewX(${value /
-                  3}) skewY(${value / 3})`}
               />
               <Use
-                href="#poly"
-                onLayout={this.handleLayout}
+                href="#square"
+                fill="green"
+                transform={`translate(100 100) scale(3) rotate(${value})`}
                 onPressIn={() => {
-                  Alert.alert("Touch handled in Use!", "", [{ text: "OK" }], {
+                  Alert.alert("Touch handled in use!", "", [{ text: "OK" }], {
                     cancelable: false
                   });
                 }}
-                transform={`translate(995 995) scale(0.5 1) rotate(${value})`}
+                onLayout={this.handleLayout}
+              />
+              <Use
+                href="#star"
+                fill="lime"
+                transform={`translate(-700 -200) scale(3) rotate(${value})`}
+                onLayout={this.handleLayout}
               />
             </G>
             <Defs>
+              <Polygon id="square" points="0,0 0,100 100,100, 100,0" />
               <Polygon
-                id="poly"
-                points="100,10 40,198 190,78 10,78 160,198"
-                fill="lime"
+                id="star"
+                points="0,0 50,200 100,0 0,150 100,150"
+                transform="scale(1 -1)"
               />
             </Defs>
           </Svg>
@@ -134,7 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    alignItems: "center"
   }
 });
