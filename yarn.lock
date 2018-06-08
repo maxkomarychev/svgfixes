@@ -4004,9 +4004,9 @@ react-devtools-core@3.0.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-"react-native-svg@git+https://github.com/maxkomarychev/react-native-svg#master":
+"react-native-svg@git+https://github.com/maxkomarychev/react-native-svg#onLayout":
   version "6.3.1"
-  resolved "git+https://github.com/maxkomarychev/react-native-svg#7a62304a4cc3f66b3728a22db70482a545eb621e"
+  resolved "git+https://github.com/maxkomarychev/react-native-svg#fe3e60f4a7a9679a0f1316af743e467a013e2c6c"
   dependencies:
     color "^2.0.1"
     lodash "^4.16.6"
